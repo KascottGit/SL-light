@@ -1,0 +1,13 @@
+Make a graph structure
+Make cost based on travel time. 
+
+Make WAIT an edge in graph, with the wait time as cost. 
+
+
+Graph path structure example: 
+
+buss 10 min - wait 4 min - train 7 min - walk 5 min
+
+Where "wait" is added dynamically as a node. 
+
+
