@@ -6,3 +6,30 @@ Each node can have an edge to another node.
 The edges cost is the difference in departure time. 
 
 Make ID remapper. 
+
+
+Classes: 
+TransitGraph.java - the graph of all stopTimes with connections. 
+StopTime.java - each departure from a stop, the nodes in the transitGraph
+Stop.java - each stop, holds information about geographic location and name
+Trips.java - each trip, including end-stop 
+Route.java - each route, number on buss 
+
+Structure of app: 
+
+1. Load all StopTime into a collection.  
+2. Load all Trip into a collection.  
+3. Load all Stop into a collection.  
+4. Load all Route into a collection.
+
+Map all StopTime to tripId. 
+Map all StopTIme to stopId. 
+Map all Trip to 
+
+7. Populate TransitGraph with StopTime. 
+
+8. Make connections based on Trip map (only forward, based on stopSequence).  
+9. Make wait connections based on Stop map (only forward in time). 
+10. Implement A* path finding
+11. Implement terminal interface
+12. Implement GUI (if time permits)

@@ -2,12 +2,17 @@
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GtfsDataLoader {
 
-    public void loadStopTimes(String filePath, TransitGraph graph) {
+    public List<StopTime> loadStopTimes(String filePath) {
+
+        List<StopTime> stopTimes = new ArrayList<>();
+
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String header = reader.readLine();
             Map<String, Integer> colMap = mapHeaders(header);
@@ -22,11 +27,12 @@ public class GtfsDataLoader {
                 int tripId = Integer.parseInt(parts[colMap.get("trip_id")]);
                 int stopSequence = Integer.parseInt(parts[colMap.get("stop_sequence")]);
 
-                graph.add(new StopTime(stopId, departureTime, stopType, tripId, stopSequence));
+                stopTimes.add(new StopTime(stopId, departureTime, stopType, tripId, stopSequence));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return stopTimes;
     }
 
     private Map<String, Integer> mapHeaders(String header) {
