@@ -4,3 +4,5 @@ Each node has a stopID, and departure time. (minutes after 00:00)
 Each node can have an edge to another node. 
 
 The edges cost is the difference in departure time. 
+
+Make ID remapper. 

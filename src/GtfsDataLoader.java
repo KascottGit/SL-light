@@ -2,9 +2,10 @@
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DataLoader {
+public class GtfsDataLoader {
 
     public void loadStopTimes(String filePath, TransitGraph graph) {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {

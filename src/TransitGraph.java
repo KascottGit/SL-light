@@ -28,4 +28,14 @@ public class TransitGraph {
         return true;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (StopTime st : graph.keySet()) {
+            sb.append(st);
+            sb.append(", ");
+        }
+        return sb.toString();
+    }
+
 }
