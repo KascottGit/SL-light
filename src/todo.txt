@@ -22,14 +22,18 @@ Structure of app:
 3. Load all Stop into a collection.  
 4. Load all Route into a collection. 
 
+
+Load all StopTime into a collection. 
 Map all StopTime to tripId. 
 Map all StopTIme to stopId. 
-Map all Trip to 
 
-7. Populate TransitGraph with StopTime. 
+Populate TransitGraph with StopTime. 
 
-8. Make connections based on Trip map (only forward, based on stopSequence).  
-9. Make wait connections based on Stop map (only forward in time). 
+Make connections based on Trip map (to next stop).  
+Make wait connections based on Stop map (to next stopTime). 
+
+A* 
+
 10. Implement A* path finding
 11. Implement terminal interface
 12. Implement GUI (if time permits)

@@ -10,7 +10,6 @@ import java.util.Map;
 public class GtfsDataLoader {
 
     public List<StopTime> loadStopTimes(String filePath) {
-
         List<StopTime> stopTimes = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
@@ -33,6 +32,31 @@ public class GtfsDataLoader {
             e.printStackTrace();
         }
         return stopTimes;
+    }
+
+    public List<Stop> loadStops(String filePath) {
+        List<Stop> stops = new ArrayList<>();
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            String header = reader.readLine();
+            Map<String, Integer> colMap = mapHeaders(header);
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                String stopId = parts[colMap.get("stop_id")];
+                String name = parts[colMap.get("stop_name")];
+
+                float posLat = Float.parseFloat(parts[colMap.get("stop_lat")]);
+                float posLong = Float.parseFloat(parts[colMap.get("stop_lon")]);
+
+                stops.add(new Stop(stopId, name, posLat, posLong));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stops;
     }
 
     private Map<String, Integer> mapHeaders(String header) {
