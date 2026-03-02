@@ -21,10 +21,10 @@ public class GtfsDataLoader {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                int stopId = Integer.parseInt(parts[colMap.get("stop_id")]);
+                String stopId = parts[colMap.get("stop_id")];
                 int departureTime = parseTimeToMinutes(parts[colMap.get("departure_time")]);
                 int stopType = parseStopType(parts[colMap.get("pickup_type")], parts[colMap.get("drop_off_type")]);
-                int tripId = Integer.parseInt(parts[colMap.get("trip_id")]);
+                String tripId = parts[colMap.get("trip_id")];
                 int stopSequence = Integer.parseInt(parts[colMap.get("stop_sequence")]);
 
                 stopTimes.add(new StopTime(stopId, departureTime, stopType, tripId, stopSequence));
@@ -56,8 +56,8 @@ public class GtfsDataLoader {
             return 2;
         }
         if (dropOffType.equals("1")) {
-            return 1;
+            return 0;
         }
-        return 0;
+        return 1;
     }
 }

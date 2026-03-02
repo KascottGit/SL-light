@@ -20,7 +20,7 @@ Structure of app:
 1. Load all StopTime into a collection.  
 2. Load all Trip into a collection.  
 3. Load all Stop into a collection.  
-4. Load all Route into a collection.
+4. Load all Route into a collection. 
 
 Map all StopTime to tripId. 
 Map all StopTIme to stopId. 

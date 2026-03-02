@@ -38,4 +38,15 @@ public class TransitGraph {
         return sb.toString();
     }
 
+    public String moveThroughTrip(StopTime start, StringBuilder sb) {
+        sb.append(start);
+        if (graph.get(start).isEmpty()) {
+            return sb.toString();
+        }
+
+        moveThroughTrip(graph.get(start).keySet().iterator().next(), sb);
+
+        return sb.toString();
+    }
+
 }
