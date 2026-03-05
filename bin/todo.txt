@@ -1,21 +1,13 @@
-Graph containing stop times / departures. 
-Each node has a stopID, and departure time. (minutes after 00:00)
-
-Each node can have an edge to another node. 
-
-The edges cost is the difference in departure time. 
-
-Make ID remapper. 
-
-
 Classes: 
 TransitGraph.java - the graph of all stopTimes with connections. 
 StopTime.java - each departure from a stop, the nodes in the transitGraph
-Stop.java - each stop, holds information about geographic location and name
-Trips.java - each trip, including end-stop 
-Route.java - each route, number on buss 
+Stop.java - each stop, holds information about geographic location and name (useful for when searching for trip, as well as heuristic for A*)
+Trips.java - each trip, including end-stop (usefull for showing user name of buss)
+Route.java - each route, number on bus (usefull for showing user bus-route)
 
 Structure of app: 
+
+Populate graph
 
 1. Load all StopTime into a collection.  
 2. Load all Trip into a collection.  
@@ -33,7 +25,3 @@ Make connections based on Trip map (to next stop).
 Make wait connections based on Stop map (to next stopTime). 
 
 A* 
-
-10. Implement A* path finding
-11. Implement terminal interface
-12. Implement GUI (if time permits)
