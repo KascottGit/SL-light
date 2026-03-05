@@ -25,3 +25,17 @@ Make connections based on Trip map (to next stop).
 Make wait connections based on Stop map (to next stopTime). 
 
 A* 
+
+
+UI: 
+
+from "Sickla" to "Slussen" at 19:20
+
+Keywords: 
+
+"from"
+"to"
+"at"
+
+Keeps asking until all three are populated. 
+

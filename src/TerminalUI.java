@@ -3,6 +3,12 @@ public class TerminalUI {
 
     private TransitNetwork transitNetwork; 
 
+    private String fromStop;
+    private String toStop;
+
+    private int atTime; 
+
+
     public TerminalUI(TransitNetwork transitNetwork){
         this.transitNetwork = transitNetwork;
     }
