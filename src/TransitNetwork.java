@@ -8,23 +8,28 @@ import java.util.Map;
 public class TransitNetwork {
 
     private TransitGraph graph;
+    private AStarRouteFinder routeFinder;
 
     private HashMap<String, List<StopTime>> tripMap;
     private HashMap<String, List<StopTime>> stopMap;
 
-    private HashMap<String, Stop> stopDirectory;
+    private HashMap<String, Stop> stopIdMap;
+    private HashMap<String, Stop> stopNameMap;
 
     public TransitNetwork() {
         graph = new TransitGraph();
+        routeFinder = new AStarRouteFinder();
         tripMap = new HashMap<>();
         stopMap = new HashMap<>();
-        stopDirectory = new HashMap<>();
+        stopIdMap = new HashMap<>();
+        stopNameMap = new HashMap<>();
     }
 
     public void buildGraph(List<StopTime> stopTimes, List<Stop> stops) {
         //Populate stopDirectory
         for (Stop stop : stops) {
-            stopDirectory.put(stop.getStopId(), stop);
+            stopIdMap.put(stop.getStopId(), stop);
+            stopNameMap.put(stop.getName(), stop);
         }
 
         //Populate graph and maps
@@ -57,5 +62,43 @@ public class TransitNetwork {
             }
         }
     }
+
+    public List<StopTime> findRoute(String startStop, String endStop, int departureTime) {
+
+        StopTime start = null;
+        StopTime end = null;
+
+        if (start == null || end == null) {
+            return null;
+        }
+
+        routeFinder.findRoute(start, end, graph.getGraph());
+        return new ArrayList<>();
+    }
+
+    public StopTime findStopTime(String stopName, int time){
+        if (stopName == null){
+            throw new NullPointerException("Stop name cannot be null");
+        }
+
+        if (!stopNameMap.containsKey(stopName)){
+            return null;
+        }
+
+        String stopId = stopNameMap.get(stopName).getStopId();
+
+        List<StopTime> stopTimes = stopMap.get(stopId);
+
+        StopTime stopTime = null;
+
+        for (StopTime s : stopTimes){
+            if (s.getDepartureTime() > time){
+                stopTime = s;
+                break;
+            }
+        }
+
+        return stopTime;
+    } 
 
 }
