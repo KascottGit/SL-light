@@ -25,7 +25,7 @@ public class Stop {
         return posLat;
     }
 
-    public float getPosLong() {
+    public float getPosLon() {
         return posLong;
     }
 

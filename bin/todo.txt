@@ -9,13 +9,9 @@ Structure of app:
 
 Populate graph
 
-1. Load all StopTime into a collection.  
-2. Load all Trip into a collection.  
-3. Load all Stop into a collection.  
-4. Load all Route into a collection. 
+Load all StopTime into a collection.  
+Load all Stop into a collection. 
 
-
-Load all StopTime into a collection. 
 Map all StopTime to tripId. 
 Map all StopTIme to stopId. 
 
@@ -29,7 +25,7 @@ A*
 
 UI: 
 
-from "Sickla" to "Slussen" at 19:20
+from Sickla to Slussen at 19:20
 
 Keywords: 
 
@@ -39,3 +35,34 @@ Keywords:
 
 Keeps asking until all three are populated. 
 
+Finding route to Kista T-bana from Henriksdal station at 8:10...
+
+------------------------------
+
+43 min
+12:25 -> 13:08
+Kista T-bana -> Henriksdal
+
+-----------------------------
+
+12:25 Kista T-bana
+|
+17 min - 5 stops along route 11 towards Kungsträdgården
+|
+12:42 T​-Centralen
+
+- Wait 9 min -
+
+12:50 T​-Centralen
+|
+2 min - Route 17 towards Skarpnäck
+|
+12:52 Slussen
+
+- Wait 14 min -
+
+13:06 Slussen
+|
+3 min - Route 444 towards Västra Orminge
+|
+13:08 Henriksdal

@@ -39,7 +39,7 @@ public class StopTime implements Comparable<StopTime> {
 
     @Override
     public String toString() {
-        return "[" + stopSequence + "]";
+        return "[" + stopId + "]";
     }
 
     @Override

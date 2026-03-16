@@ -18,7 +18,7 @@ public class TransitNetwork {
 
     public TransitNetwork() {
         graph = new TransitGraph();
-        routeFinder = new AStarRouteFinder();
+        routeFinder = new AStarRouteFinder(this);
         tripMap = new HashMap<>();
         stopMap = new HashMap<>();
         stopIdMap = new HashMap<>();
@@ -29,7 +29,7 @@ public class TransitNetwork {
         //Populate stopDirectory
         for (Stop stop : stops) {
             stopIdMap.put(stop.getStopId(), stop);
-            stopNameMap.put(stop.getName(), stop);
+            stopNameMap.put(stop.getName().toLowerCase(), stop);
         }
 
         //Populate graph and maps
@@ -63,42 +63,89 @@ public class TransitNetwork {
         }
     }
 
-    public List<StopTime> findRoute(String startStop, String endStop, int departureTime) {
-
-        StopTime start = null;
-        StopTime end = null;
-
-        if (start == null || end == null) {
+    public List<StopTime> findRoute(Stop fromStop, Stop toStop, int departureTime) {
+        if (fromStop == null || toStop == null) {
             return null;
         }
 
-        routeFinder.findRoute(start, end, graph.getGraph());
-        return new ArrayList<>();
+        StopTime fromStopTime = findStopTime(fromStop, departureTime);
+        if (fromStopTime == null) {
+            return null;
+        }
+
+        return routeFinder.findRoute(fromStopTime, toStop, graph.getGraph());
     }
 
-    public StopTime findStopTime(String stopName, int time){
-        if (stopName == null){
-            throw new NullPointerException("Stop name cannot be null");
-        }
-
-        if (!stopNameMap.containsKey(stopName)){
+    public StopTime findStopTime(Stop stop, int time) {
+        if (stop == null) {
             return null;
         }
 
-        String stopId = stopNameMap.get(stopName).getStopId();
+        String stopId = stop.getStopId();
 
         List<StopTime> stopTimes = stopMap.get(stopId);
 
         StopTime stopTime = null;
 
-        for (StopTime s : stopTimes){
-            if (s.getDepartureTime() > time){
+        for (StopTime s : stopTimes) {
+            if (s.getDepartureTime() > time) {
                 stopTime = s;
                 break;
             }
         }
 
         return stopTime;
-    } 
+    }
+
+    public Stop findStopByName(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        if (!stopNameMap.containsKey(name)) {
+            return null;
+        }
+
+        return stopNameMap.get(name);
+    }
+
+    public Stop findStopById(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        if (!stopIdMap.containsKey(id)) {
+            return null;
+        }
+
+        return stopIdMap.get(id);
+    }
+
+    public double distanceBetweenStops(String stopIdFrom, String stopIdTo) {
+        if (!stopIdMap.containsKey(stopIdFrom) || !stopIdMap.containsKey(stopIdTo)) {
+            return -1;
+        }
+
+        double R = 6371.0; //Earth radius in km
+
+        Stop from = stopIdMap.get(stopIdFrom);
+        double lat1 = from.getPosLat();
+        double lon1 = from.getPosLon();
+
+        Stop to = stopIdMap.get(stopIdTo);
+        double lat2 = to.getPosLat();
+        double lon2 = to.getPosLon();
+
+        double phi1 = Math.toRadians(lat1);
+        double phi2 = Math.toRadians(lat2);
+        double dphi = Math.toRadians(lat2 - lat1);
+        double dlambda = Math.toRadians(lon2 - lon1);
+
+        //Haversine formula
+        double a = Math.pow(Math.sin(dphi / 2), 2) + Math.cos(phi1) * Math.cos(phi2) * Math.pow(Math.sin(dlambda / 2), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
 
 }
