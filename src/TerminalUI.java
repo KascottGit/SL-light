@@ -21,10 +21,9 @@ public class TerminalUI {
 
     public void start() {
 
-        System.out.println("Welcome to SL");
+        System.out.println("\n\n\n-------SL Route Finder-------");
 
         listCommands();
-
         readInput();
     }
 
@@ -32,7 +31,8 @@ public class TerminalUI {
         if (fromStop == null || toStop == null) {
             return;
         }
-        System.out.println("Finding route to " + toStop.getName() + " from " + fromStop.getName() + " at " + atTimeHours + ":" + atTimeMinutes + "...");
+
+        System.out.println("\nFinding route to " + toStop.getName() + " from " + fromStop.getName() + " at " + atTimeHours + ":" + atTimeMinutes + "...");
 
         int atTime = atTimeHours * 60 + atTimeMinutes;
 
@@ -42,12 +42,12 @@ public class TerminalUI {
     }
 
     private void listCommands() {
-        System.out.println("~~~~~ Commands ~~~~~");
-        System.out.println("1. from <station name>");
-        System.out.println("2. to <station name>");
-        System.out.println("3. at <time of departure in hh:mm or h:mm>");
-        System.out.println("4. help");
-        System.out.println("5. quit");
+        System.out.println("\nCOMMANDS:");
+        System.out.println("  from <station name>");
+        System.out.println("  to <station name>");
+        System.out.println("  at <time of departure in hh:mm or h:mm>");
+        System.out.println("  help");
+        System.out.println("  quit");
         System.out.println("");
     }
 
@@ -76,7 +76,7 @@ public class TerminalUI {
                             command.append(" ");
                         }
                         String fromStopName = command.toString().trim().toLowerCase();
-                        fromStop = transitNetwork.findStopByName(fromStopName);
+                        fromStop = transitNetwork.getStopByName(fromStopName);
                         if (fromStop == null) {
                             System.out.println("Error: " + fromStopName + " does not exist! ");
                         }
@@ -94,7 +94,7 @@ public class TerminalUI {
                             command.append(" ");
                         }
                         String toStopName = command.toString().trim().toLowerCase();
-                        toStop = transitNetwork.findStopByName(toStopName);
+                        toStop = transitNetwork.getStopByName(toStopName);
                         if (toStop == null) {
                             System.out.println("Error: " + toStopName + " does not exist! ");
                         }
@@ -177,8 +177,8 @@ public class TerminalUI {
         StopTime lastStop = route.get(route.size() - 1);
 
         int totalMinutes = lastStop.getDepartureTime() - firstStop.getDepartureTime();
-        String startName = transitNetwork.findStopById(firstStop.getStopId()).getName();
-        String endName = transitNetwork.findStopById(lastStop.getStopId()).getName();
+        String startName = transitNetwork.getStopById(firstStop.getStopId()).getName();
+        String endName = transitNetwork.getStopById(lastStop.getStopId()).getName();
 
         // Print Summary Header
         System.out.println("\n-----------------------------\n");
@@ -216,12 +216,12 @@ public class TerminalUI {
                 StopTime travelEnd = route.get(i);
 
                 int travelTime = travelEnd.getDepartureTime() - travelStart.getDepartureTime();
-                String legStartName = transitNetwork.findStopById(travelStart.getStopId()).getName();
-                String legEndName = transitNetwork.findStopById(travelEnd.getStopId()).getName();
+                String legStartName = transitNetwork.getStopById(travelStart.getStopId()).getName();
+                String legEndName = transitNetwork.getStopById(travelEnd.getStopId()).getName();
 
                 System.out.println(formatTime(travelStart.getDepartureTime()) + " " + legStartName);
                 System.out.println("|");
-                System.out.println(travelTime + " min - Trip " + travelStart.getTripId());
+                System.out.println(travelTime + " min - " + (i - travelStartIdx) + " stops along " + transitNetwork.getTripInformation(travelStart.getTripId()));
                 System.out.println("|");
                 System.out.println(formatTime(travelEnd.getDepartureTime()) + " " + legEndName);
             } // 3. Unhandled Graph Edge (e.g., Footpaths)

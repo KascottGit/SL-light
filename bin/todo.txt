@@ -1,29 +1,19 @@
-Classes: 
-TransitGraph.java - the graph of all stopTimes with connections. 
-StopTime.java - each departure from a stop, the nodes in the transitGraph
-Stop.java - each stop, holds information about geographic location and name (useful for when searching for trip, as well as heuristic for A*)
-Trips.java - each trip, including end-stop (usefull for showing user name of buss)
-Route.java - each route, number on bus (usefull for showing user bus-route)
-
-Structure of app: 
-
-Populate graph
-
-Load all StopTime into a collection.  
-Load all Stop into a collection. 
-
-Map all StopTime to tripId. 
-Map all StopTIme to stopId. 
-
-Populate TransitGraph with StopTime. 
-
-Make connections based on Trip map (to next stop).  
-Make wait connections based on Stop map (to next stopTime). 
-
-A* 
+TODO: 
 
 
-UI: 
+Remove waits in the beginning of the Trip
+
+Make waiting better than going forward and backwards in the graph. 
+
+Add minimum wait between stops
+
+
+
+
+
+
+
+
 
 from Sickla to Slussen at 19:20
 

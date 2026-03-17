@@ -59,6 +59,53 @@ public class GtfsDataLoader {
         return stops;
     }
 
+    public List<Route> loadRoutes(String filePath) {
+        List<Route> routes = new ArrayList<>();
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            String header = reader.readLine();
+            Map<String, Integer> colMap = mapHeaders(header);
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                String routeId = parts[colMap.get("route_id")];
+                String shortName = parts[colMap.get("route_short_name")];
+                String longName = parts[colMap.get("route_long_name")];
+
+                routes.add(new Route(routeId, shortName, longName));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return routes;
+    }
+
+    public List<Trip> loadTrips(String filePath) {
+        List<Trip> routes = new ArrayList<>();
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
+            String header = reader.readLine();
+            Map<String, Integer> colMap = mapHeaders(header);
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                String tripId = parts[colMap.get("trip_id")];
+                String routeId = parts[colMap.get("route_id")];
+
+                String headSign = parts[colMap.get("trip_headsign")];
+
+                routes.add(new Trip(tripId, routeId, headSign));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return routes;
+    }
+
     private Map<String, Integer> mapHeaders(String header) {
         Map<String, Integer> colMap = new HashMap<>();
         String[] columns = header.split(",");

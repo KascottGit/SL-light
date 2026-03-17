@@ -16,6 +16,9 @@ public class TransitNetwork {
     private HashMap<String, Stop> stopIdMap;
     private HashMap<String, Stop> stopNameMap;
 
+    private HashMap<String, Trip> tripIdMap;
+    private HashMap<String, Route> routeIdMap;
+
     public TransitNetwork() {
         graph = new TransitGraph();
         routeFinder = new AStarRouteFinder(this);
@@ -23,13 +26,25 @@ public class TransitNetwork {
         stopMap = new HashMap<>();
         stopIdMap = new HashMap<>();
         stopNameMap = new HashMap<>();
+        tripIdMap = new HashMap<>();
+        routeIdMap = new HashMap<>();
     }
 
-    public void buildGraph(List<StopTime> stopTimes, List<Stop> stops) {
+    public void buildGraph(List<StopTime> stopTimes, List<Stop> stops, List<Trip> trips, List<Route> routes) {
         //Populate stopDirectory
         for (Stop stop : stops) {
             stopIdMap.put(stop.getStopId(), stop);
             stopNameMap.put(stop.getName().toLowerCase(), stop);
+        }
+
+        //Populate Trip Directoty
+        for (Trip trip : trips) {
+            tripIdMap.put(trip.getTripId(), trip);
+        }
+
+        //Populate Route Directoty
+        for (Route route : routes) {
+            routeIdMap.put(route.getRouteId(), route);
         }
 
         //Populate graph and maps
@@ -97,11 +112,10 @@ public class TransitNetwork {
         return stopTime;
     }
 
-    public Stop findStopByName(String name) {
+    public Stop getStopByName(String name) {
         if (name == null) {
             return null;
         }
-
         if (!stopNameMap.containsKey(name)) {
             return null;
         }
@@ -109,16 +123,38 @@ public class TransitNetwork {
         return stopNameMap.get(name);
     }
 
-    public Stop findStopById(String id) {
+    public Stop getStopById(String id) {
         if (id == null) {
             return null;
         }
-
         if (!stopIdMap.containsKey(id)) {
             return null;
         }
 
         return stopIdMap.get(id);
+    }
+
+    public String getTripInformation(String tripId) {
+        if (tripId == null) {
+            return null;
+        }
+        if (!tripIdMap.containsKey(tripId)) {
+            return null;
+        }
+
+        Trip trip = tripIdMap.get(tripId);
+        String routeId = trip.getRouteId();
+
+        if (!routeIdMap.containsKey(routeId)) {
+            return null;
+        }
+        Route route = routeIdMap.get(routeId);
+
+        String routeName = route.getLongName().isBlank() ? route.getShortName() : route.getLongName();
+
+        String headSign = trip.getHeadSign();
+
+        return "route " + routeName + " towards " + headSign;
     }
 
     public double distanceBetweenStops(String stopIdFrom, String stopIdTo) {
