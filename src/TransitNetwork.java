@@ -1,23 +1,19 @@
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TransitNetwork {
 
-    private TransitGraph graph;
-    private AStarRouteFinder routeFinder;
+    private final TransitGraph graph;
+    private final AStarRouteFinder routeFinder;
 
-    private HashMap<String, List<StopTime>> tripMap;
-    private HashMap<String, List<StopTime>> stopMap;
+    private final HashMap<String, List<StopTime>> tripMap;
+    private final HashMap<String, List<StopTime>> stopMap;
 
-    private HashMap<String, Stop> stopIdMap;
-    private HashMap<String, Stop> stopNameMap;
+    private final HashMap<String, Stop> stopIdMap;
+    private final HashMap<String, Stop> stopNameMap;
 
-    private HashMap<String, Trip> tripIdMap;
-    private HashMap<String, Route> routeIdMap;
+    private final HashMap<String, Trip> tripIdMap;
+    private final HashMap<String, Route> routeIdMap;
 
     public TransitNetwork() {
         graph = new TransitGraph();
@@ -49,11 +45,8 @@ public class TransitNetwork {
 
         //Populate graph and maps
         for (StopTime stopTime : stopTimes) {
-            //Add to graph
             graph.add(stopTime);
-            //Map to tripId
             tripMap.computeIfAbsent(stopTime.getTripId(), k -> new ArrayList<>()).add(stopTime);
-            //Map to stopId
             stopMap.computeIfAbsent(stopTime.getStopId(), k -> new ArrayList<>()).add(stopTime);
         }
 
@@ -120,7 +113,7 @@ public class TransitNetwork {
             return null;
         }
 
-        return stopNameMap.get(name);
+        return stopNameMap.get(name.trim().toLowerCase());
     }
 
     public Stop getStopById(String id) {
@@ -162,7 +155,7 @@ public class TransitNetwork {
             return -1;
         }
 
-        double R = 6371.0; //Earth radius in km
+        double R = 6371.0; //Earth radius km
 
         Stop from = stopIdMap.get(stopIdFrom);
         double lat1 = from.getPosLat();
@@ -177,7 +170,6 @@ public class TransitNetwork {
         double dphi = Math.toRadians(lat2 - lat1);
         double dlambda = Math.toRadians(lon2 - lon1);
 
-        //Haversine formula
         double a = Math.pow(Math.sin(dphi / 2), 2) + Math.cos(phi1) * Math.cos(phi2) * Math.pow(Math.sin(dlambda / 2), 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 

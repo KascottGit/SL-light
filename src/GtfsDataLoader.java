@@ -1,11 +1,7 @@
 
-import java.io.BufferedReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 
 public class GtfsDataLoader {
 
@@ -29,7 +25,6 @@ public class GtfsDataLoader {
                 stopTimes.add(new StopTime(stopId, departureTime, stopType, tripId, stopSequence));
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return stopTimes;
     }
@@ -54,7 +49,6 @@ public class GtfsDataLoader {
                 stops.add(new Stop(stopId, name, posLat, posLong));
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return stops;
     }
@@ -77,7 +71,6 @@ public class GtfsDataLoader {
                 routes.add(new Route(routeId, shortName, longName));
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return routes;
     }
@@ -101,7 +94,6 @@ public class GtfsDataLoader {
                 routes.add(new Trip(tripId, routeId, headSign));
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return routes;
     }

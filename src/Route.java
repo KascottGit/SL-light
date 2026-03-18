@@ -1,9 +1,9 @@
 
 public class Route {
 
-    private String routeId;
-    private String shortName;
-    private String longName;
+    private final String routeId;
+    private final String shortName;
+    private final String longName;
 
     public Route(String routeId, String shortName, String longName) {
         this.routeId = routeId;

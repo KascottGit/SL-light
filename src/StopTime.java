@@ -1,20 +1,20 @@
 
 public class StopTime implements Comparable<StopTime> {
 
-    private String stopId;
-    private int departureTime;
+    private final String stopId;
+    private final int departureTime;
 
-    private int stopType;
+    private final int stopType;
 
-    private String tripId;
-    private int stopSequence;
+    private final String tripId;
+    private final int stopSequence;
 
     public StopTime(String stopId, int departureTime, int stopType, String tripId, int stopSequence) {
-        this.stopId = stopId; //Refers to the stop
-        this.departureTime = departureTime; //When it arrives at the stop
-        this.stopType = stopType; //0 for only drop off, 1 for drop off and pick up, 2 for only pick upp. 
-        this.tripId = tripId; //Refers to the trip, to connect to next stop
-        this.stopSequence = stopSequence; //To find next stop in the trip
+        this.stopId = stopId;
+        this.departureTime = departureTime;
+        this.stopType = stopType;
+        this.tripId = tripId;
+        this.stopSequence = stopSequence;
     }
 
     public String getStopId() {
@@ -43,7 +43,7 @@ public class StopTime implements Comparable<StopTime> {
     }
 
     @Override
-    public int compareTo(StopTime o) {
-        return departureTime - o.getDepartureTime();
+    public int compareTo(StopTime other) {
+        return departureTime - other.getDepartureTime();
     }
 }

@@ -1,18 +1,4 @@
-TODO: 
-
-
-Remove waits in the beginning of the Trip
-
-Make waiting better than going forward and backwards in the graph. 
-
-Add minimum wait between stops
-
-
-
-
-
-
-
+Issues when printing time.
 
 
 from Sickla to Slussen at 19:20

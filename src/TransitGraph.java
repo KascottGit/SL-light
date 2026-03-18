@@ -1,10 +1,9 @@
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TransitGraph {
 
-    private Map<StopTime, Map<StopTime, Integer>> graph;
+    private final Map<StopTime, Map<StopTime, Integer>> graph;
 
     public TransitGraph() {
         graph = new HashMap<>();

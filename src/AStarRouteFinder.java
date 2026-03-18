@@ -1,18 +1,10 @@
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class AStarRouteFinder {
 
-    private TransitNetwork transitNetwork;
-
     private final TransitNetwork network;
 
-    // Inject the network so the algorithm can calculate the spatial heuristic
     public AStarRouteFinder(TransitNetwork network) {
         this.network = network;
     }
@@ -23,11 +15,19 @@ public class AStarRouteFinder {
         }
 
         PriorityQueue<RouteNode> openSet = new PriorityQueue<>();
-        Map<StopTime, Integer> gScore = new HashMap<>();
-        Map<StopTime, StopTime> cameFrom = new HashMap<>();
+        Map<StateKey, Integer> gScore = new HashMap<>();
 
-        gScore.put(start, 0);
-        openSet.add(new RouteNode(start, 0, heuristic(start, end)));
+        // Start state
+        Set<String> initialVisited = new HashSet<>();
+        initialVisited.add(start.getStopId());
+
+        RouteNode startNode = new RouteNode(
+                start, 0, heuristic(start, end), start.getDepartureTime(), start.getTripId(), initialVisited, null
+        );
+
+        StateKey startKey = new StateKey(start, start.getTripId());
+        gScore.put(startKey, 0);
+        openSet.add(startNode);
 
         while (!openSet.isEmpty()) {
             RouteNode current = openSet.poll();
@@ -35,7 +35,7 @@ public class AStarRouteFinder {
 
             // Goal reached
             if (currentStop.getStopId().equals(end.getStopId())) {
-                return reconstructPath(cameFrom, currentStop);
+                return reconstructPath(current);
             }
 
             Map<StopTime, Integer> neighbors = graph.get(currentStop);
@@ -47,19 +47,44 @@ public class AStarRouteFinder {
                 StopTime neighbor = neighborEntry.getKey();
                 int edgeCost = neighborEntry.getValue();
 
-                int tentativeGScore = gScore.getOrDefault(currentStop, Integer.MAX_VALUE) + edgeCost;
+                boolean isSameTrip = currentStop.getTripId().equals(neighbor.getTripId());
+                boolean isSameStop = currentStop.getStopId().equals(neighbor.getStopId());
 
-                if (tentativeGScore < gScore.getOrDefault(neighbor, Integer.MAX_VALUE)) {
-                    cameFrom.put(neighbor, currentStop);
-                    gScore.put(neighbor, tentativeGScore);
+                if (isSameTrip && !current.arrivalTripId.equals(currentStop.getTripId())) {
+                    if (currentStop.getDepartureTime() - current.stationArrivalTime < 1) {
+                        continue;
+                    }
+                }
+
+                if (!isSameStop) {
+                    if (current.visitedStops.contains(neighbor.getStopId())) {
+                        continue;
+                    }
+                }
+
+                int tentativeGScore = current.gScore + edgeCost;
+
+                int nextArrivalTime = isSameTrip ? neighbor.getDepartureTime() : current.stationArrivalTime;
+                String nextArrivalTripId = isSameTrip ? neighbor.getTripId() : current.arrivalTripId;
+
+                StateKey neighborKey = new StateKey(neighbor, nextArrivalTripId);
+
+                if (tentativeGScore < gScore.getOrDefault(neighborKey, Integer.MAX_VALUE)) {
+                    gScore.put(neighborKey, tentativeGScore);
 
                     int fScore = tentativeGScore + heuristic(neighbor, end);
-                    openSet.add(new RouteNode(neighbor, tentativeGScore, fScore));
+
+                    Set<String> nextVisited = new HashSet<>(current.visitedStops);
+                    if (!isSameStop) {
+                        nextVisited.add(neighbor.getStopId());
+                    }
+
+                    openSet.add(new RouteNode(neighbor, tentativeGScore, fScore, nextArrivalTime, nextArrivalTripId, nextVisited, current));
                 }
             }
         }
 
-        return Collections.emptyList(); // No path found
+        return Collections.emptyList(); // No valid path exists
     }
 
     private int heuristic(StopTime current, Stop end) {
@@ -70,31 +95,69 @@ public class AStarRouteFinder {
         return (int) (distanceKm / 2);
     }
 
-    private List<StopTime> reconstructPath(Map<StopTime, StopTime> cameFrom, StopTime current) {
+    private List<StopTime> reconstructPath(RouteNode endNode) {
         List<StopTime> path = new ArrayList<>();
-        path.add(current);
-        while (cameFrom.containsKey(current)) {
-            current = cameFrom.get(current);
-            path.add(0, current); // Prepend to reverse the path automatically
+        RouteNode current = endNode;
+        while (current != null) {
+            path.add(0, current.stopTime);
+            current = current.parent;
         }
         return path;
     }
 
+    private static class StateKey {
+
+        private final StopTime stopTime;
+        private final String arrivalTripId;
+
+        public StateKey(StopTime stopTime, String arrivalTripId) {
+            this.stopTime = stopTime;
+            this.arrivalTripId = arrivalTripId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            StateKey stateKey = (StateKey) o;
+            return stopTime.equals(stateKey.stopTime) && arrivalTripId.equals(stateKey.arrivalTripId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(stopTime, arrivalTripId);
+        }
+    }
+
     private static class RouteNode implements Comparable<RouteNode> {
 
-        StopTime stopTime;
-        int gScore;
-        int fScore;
+        final StopTime stopTime;
+        final int gScore;
+        final int fScore;
 
-        RouteNode(StopTime stopTime, int gScore, int fScore) {
+        final int stationArrivalTime;
+        final String arrivalTripId;
+        final Set<String> visitedStops;
+
+        final RouteNode parent;
+
+        RouteNode(StopTime stopTime, int gScore, int fScore, int stationArrivalTime, String arrivalTripId, Set<String> visitedStops, RouteNode parent) {
             this.stopTime = stopTime;
             this.gScore = gScore;
             this.fScore = fScore;
+            this.stationArrivalTime = stationArrivalTime;
+            this.arrivalTripId = arrivalTripId;
+            this.visitedStops = visitedStops;
+            this.parent = parent;
         }
 
         @Override
         public int compareTo(RouteNode other) {
-            return Integer.compare(this.fScore, other.fScore);
+            return fScore - other.fScore;
         }
     }
 }

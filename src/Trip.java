@@ -1,9 +1,9 @@
 
 public class Trip {
 
-    private String tripId;
-    private String routeId;
-    private String headSign;
+    private final String tripId;
+    private final String routeId;
+    private final String headSign;
 
     public Trip(String tripId, String routeId, String headSign) {
         this.tripId = tripId;
