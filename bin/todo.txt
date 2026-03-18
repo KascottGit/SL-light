@@ -1,6 +1,3 @@
-Issues when printing time.
-
-
 from Sickla to Slussen at 19:20
 
 Keywords: 
