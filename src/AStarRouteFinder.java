@@ -50,7 +50,19 @@ public class AStarRouteFinder {
                 boolean isSameTrip = currentStop.getTripId().equals(neighbor.getTripId());
                 boolean isSameStop = currentStop.getStopId().equals(neighbor.getStopId());
 
+                if (isSameStop && !isSameTrip) {
+                    if (current.arrivalTripId.equals(currentStop.getTripId())) {
+                        if (currentStop.getStopType() == 2) {
+                            continue;
+                        }
+                    }
+                }
+
                 if (isSameTrip && !current.arrivalTripId.equals(currentStop.getTripId())) {
+                    if (currentStop.getStopType() == 0) {
+                        continue;
+                    }
+
                     if (currentStop.getDepartureTime() - current.stationArrivalTime < 1) {
                         continue;
                     }

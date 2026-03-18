@@ -12,7 +12,7 @@ public class StopTime implements Comparable<StopTime> {
     public StopTime(String stopId, int departureTime, int stopType, String tripId, int stopSequence) {
         this.stopId = stopId;
         this.departureTime = departureTime;
-        this.stopType = stopType;
+        this.stopType = stopType; //0 for only drop off, 1 both, 2 for only pick upp. 
         this.tripId = tripId;
         this.stopSequence = stopSequence;
     }
