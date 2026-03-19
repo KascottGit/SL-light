@@ -1,13 +1,13 @@
 
 public class StopTime implements Comparable<StopTime> {
 
-    private final String stopId;
-    private final int departureTime;
+    private String stopId;
+    private int departureTime;
 
-    private final int stopType;
+    private int stopType;
 
-    private final String tripId;
-    private final int stopSequence;
+    private String tripId;
+    private int stopSequence;
 
     public StopTime(String stopId, int departureTime, int stopType, String tripId, int stopSequence) {
         this.stopId = stopId;

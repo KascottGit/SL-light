@@ -1,10 +1,10 @@
 
 public class Stop {
 
-    private final String stopId;
-    private final String name;
-    private final float posLat;
-    private final float posLong;
+    private String stopId;
+    private String name;
+    private float posLat;
+    private float posLong;
 
     public Stop(String stopId, String name, float posLat, float posLong) {
         this.stopId = stopId;

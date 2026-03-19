@@ -3,7 +3,7 @@ import java.util.*;
 
 public class TerminalUI {
 
-    private final TransitNetwork transitNetwork;
+    private TransitNetwork transitNetwork;
 
     private Stop fromStop;
     private Stop toStop;
@@ -87,7 +87,7 @@ public class TerminalUI {
                 break;
             }
 
-            if (fromStop != null && fromStop != null && departureTime != -1) {
+            if (toStop != null && fromStop != null && departureTime != -1) {
                 findRoute();
             }
 

@@ -3,17 +3,17 @@ import java.util.*;
 
 public class TransitNetwork {
 
-    private final TransitGraph graph;
-    private final AStarRouteFinder routeFinder;
+    private TransitGraph graph;
+    private AStarRouteFinder routeFinder;
 
-    private final HashMap<String, List<StopTime>> tripMap;
-    private final HashMap<String, List<StopTime>> stopMap;
+    private HashMap<String, List<StopTime>> tripMap;
+    private HashMap<String, List<StopTime>> stopMap;
 
-    private final HashMap<String, Stop> stopIdMap;
-    private final HashMap<String, Stop> stopNameMap;
+    private HashMap<String, Stop> stopIdMap;
+    private HashMap<String, Stop> stopNameMap;
 
-    private final HashMap<String, Trip> tripIdMap;
-    private final HashMap<String, Route> routeIdMap;
+    private HashMap<String, Trip> tripIdMap;
+    private HashMap<String, Route> routeIdMap;
 
     public TransitNetwork() {
         graph = new TransitGraph();

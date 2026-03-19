@@ -3,7 +3,8 @@ import java.util.*;
 
 public class AStarRouteFinder {
 
-    private final TransitNetwork network;
+    private TransitNetwork network;
+    private final int MIN_WAIT_TIME = 1;
 
     public AStarRouteFinder(TransitNetwork network) {
         this.network = network;
@@ -63,7 +64,7 @@ public class AStarRouteFinder {
                         continue;
                     }
 
-                    if (currentStop.getDepartureTime() - current.stationArrivalTime < 1) {
+                    if (currentStop.getDepartureTime() - current.stationArrivalTime < MIN_WAIT_TIME) {
                         continue;
                     }
                 }
