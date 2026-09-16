@@ -1,18 +1,16 @@
-## Getting Started
+SL-light
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A public-transport routing engine built in Java using real GTFS data from SL. 
 
-## Folder Structure
+The project models Stockholm's public-transport network as a time-dependent graph and uses a customized A* search algorithm to find routes between stations based on a requested departure time.
 
-The workspace contains two folders by default, where:
+The system was developed as a school programming project with a focus on graph algorithms, data structures, routing logic, and working with real-world transit data.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Features
+- Route finding between SL stations
+- Time-dependent routing based on scheduled departures
+- Real SL GTFS data
+- Transfers between different trips at the same station
+- A*-based route search
+- Geographic heuristic based on the distance between stations
+- Terminal-based user interface
